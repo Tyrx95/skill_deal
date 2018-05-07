@@ -40,7 +40,10 @@ public class UserService extends BaseService {
             Location location = (Location) getSession().createCriteria(Location.class)
                     .add(Restrictions.eq("id", registerForm.getLocationId()))
                     .uniqueResult();
-            User newUser = registerForm.createAccount(location);
+            Location homeLocation = (Location) getSession().createCriteria(Location.class)
+                    .add(Restrictions.eq("id", registerForm.getHomeLocationId()))
+                    .uniqueResult();
+            User newUser = registerForm.createAccount(location, homeLocation);
             getSession().save(newUser);
             return newUser;
         } catch (Exception e) {

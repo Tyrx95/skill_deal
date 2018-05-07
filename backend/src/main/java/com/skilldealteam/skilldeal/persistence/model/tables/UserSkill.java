@@ -18,11 +18,16 @@ public class UserSkill extends BaseModel {
     @Column(name = "lesson_price")
     private Integer lessonPrice;
 
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "skill_category_id", referencedColumnName = "id")
     private SkillCategory skill;
 
-    @OneToMany(mappedBy = "user_skill_id")
-    private Set<Tag> tags;
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User userId;
 
     public UUID getId() {
         return id;
@@ -48,11 +53,19 @@ public class UserSkill extends BaseModel {
         this.skill = skill;
     }
 
-    public Set<Tag> getTags() {
-        return tags;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 }

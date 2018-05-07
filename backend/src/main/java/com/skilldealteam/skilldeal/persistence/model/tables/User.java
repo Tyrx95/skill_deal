@@ -5,10 +5,7 @@ import com.skilldealteam.skilldeal.persistence.model.BaseModel;
 import com.skilldealteam.skilldeal.services.Passwords;
 
 import javax.persistence.*;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The User model
@@ -35,6 +32,10 @@ public class User extends BaseModel {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "home_location_id", referencedColumnName = "id")
+    private Location homeLocation;
+
     @Column(name = "biography")
     private String biography;
 
@@ -59,24 +60,33 @@ public class User extends BaseModel {
     @OneToMany(mappedBy = "userId")
     private Set<UserSkill> skills;
 
-    @OneToMany(mappedBy = "userId")
-    private Set<Review> receivedReviews;
+    @OneToMany(mappedBy = "student")
+    private List<Lesson> studentLessons;
 
-    @OneToMany(mappedBy = "userId")
-    private Set<Review> givenReviews;
+    @OneToMany(mappedBy = "tutor")
+    private List<Lesson> tutorLessons;
 
-    @OneToMany(mappedBy = "userId")
-    private Set<Lesson> lessons;
+    @Column(name = "number_of_ratings")
+    private Integer number_of_ratings;
 
+    @Column(name = "rating")
+    private Double rating;
+
+    @OneToMany(mappedBy = "student")
+    private List<LessonRequest> studentLessonRequests;
+
+    @OneToMany(mappedBy = "tutor")
+    private List<LessonRequest> tutorLessonRequests;
 
     public User() { }
 
-    public User(String firstName, String lastName, String email, String password, Location location) {
+    public User(String firstName, String lastName, String email, String password, Location location, Location homeLocation) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.setPassword(password);
         this.location = location;
+        this.homeLocation = homeLocation;
     }
 
     public UUID getId() { return id; }
@@ -168,27 +178,59 @@ public class User extends BaseModel {
         this.skills = skills;
     }
 
-    public Set<Review> getReceivedReviews() {
-        return receivedReviews;
+    public Location getHomeLocation() {
+        return homeLocation;
     }
 
-    public void setReceivedReviews(Set<Review> receivedReviews) {
-        this.receivedReviews = receivedReviews;
+    public void setHomeLocation(Location homeLocation) {
+        this.homeLocation = homeLocation;
     }
 
-    public Set<Review> getGivenReviews() {
-        return givenReviews;
+    public Integer getNumber_of_ratings() {
+        return number_of_ratings;
     }
 
-    public void setGivenReviews(Set<Review> givenReviews) {
-        this.givenReviews = givenReviews;
+    public void setNumber_of_ratings(Integer number_of_ratings) {
+        this.number_of_ratings = number_of_ratings;
     }
 
-    public Set<Lesson> getLessons() {
-        return lessons;
+    public Double getRating() {
+        return rating;
     }
 
-    public void setLessons(Set<Lesson> lessons) {
-        this.lessons = lessons;
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public List<LessonRequest> getStudentLessonRequests() {
+        return studentLessonRequests;
+    }
+
+    public void setStudentLessonRequests(List<LessonRequest> studentLessonRequests) {
+        this.studentLessonRequests = studentLessonRequests;
+    }
+
+    public List<LessonRequest> getTutorLessonRequests() {
+        return tutorLessonRequests;
+    }
+
+    public void setTutorLessonRequests(List<LessonRequest> tutorLessonRequests) {
+        this.tutorLessonRequests = tutorLessonRequests;
+    }
+
+    public List<Lesson> getStudentLessons() {
+        return studentLessons;
+    }
+
+    public void setStudentLessons(List<Lesson> studentLessons) {
+        this.studentLessons = studentLessons;
+    }
+
+    public List<Lesson> getTutorLessons() {
+        return tutorLessons;
+    }
+
+    public void setTutorLessons(List<Lesson> tutorLessons) {
+        this.tutorLessons = tutorLessons;
     }
 }

@@ -15,6 +15,7 @@ public class RegisterForm {
     private String biography;
     private Date dateOfBirth;
     private UUID locationId;
+    private UUID homeLocationId;
     private String imageUri;
 
     public RegisterForm() {}
@@ -83,8 +84,16 @@ public class RegisterForm {
         this.imageUri = imageUri;
     }
 
-    public User createAccount(Location location) {
-        User newUser = new User(this.firstName, this.lastName, this.email, this.password, location);
+    public UUID getHomeLocationId() {
+        return homeLocationId;
+    }
+
+    public void setHomeLocationId(UUID homeLocationId) {
+        this.homeLocationId = homeLocationId;
+    }
+
+    public User createAccount(Location location, Location homeLocation) {
+        User newUser = new User(this.firstName, this.lastName, this.email, this.password, location, homeLocation);
         newUser.setBiography(biography);
         newUser.setDateOfBirth(dateOfBirth);
         newUser.setEmail(email);

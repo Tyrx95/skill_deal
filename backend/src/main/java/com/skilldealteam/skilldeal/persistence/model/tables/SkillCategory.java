@@ -18,8 +18,9 @@ public class SkillCategory extends BaseModel{
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "skill_category_id")
-    private Set<UserSkill> userSkills;
+    @OneToOne(mappedBy = "skill", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private UserSkill userSkill;
 
     public SkillCategory() {}
 
@@ -39,11 +40,15 @@ public class SkillCategory extends BaseModel{
         this.name = name;
     }
 
-    public Set<UserSkill> getUserSkills() {
-        return userSkills;
-    }
-
-    public void setUserSkills(Set<UserSkill> userSkills) {
-        this.userSkills = userSkills;
+    public void setUserSkill(UserSkill userSkill) {
+        if (userSkill == null) {
+            if (this.userSkill != null) {
+                this.userSkill.setSkill(null);
+            }
+        }
+        else {
+            userSkill.setSkill(this);
+        }
+        this.userSkill = userSkill;
     }
 }
