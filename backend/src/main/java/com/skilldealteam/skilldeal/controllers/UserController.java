@@ -22,7 +22,7 @@ public class UserController extends BaseController {
     @Autowired
     private UserService service;
 
-    @RequestMapping(value = "/api/v1/login", method = RequestMethod.POST, produces="application/json")
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity login(@RequestBody LoginForm loginForm) {
         return wrapForPublic(() -> {
             User user = this.service.authenticate(loginForm);
@@ -74,17 +74,17 @@ public class UserController extends BaseController {
         });
     }
 
-    @RequestMapping(value = "/api/v1/admin/getAllUsers", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/api/users", method = RequestMethod.GET, produces="application/json")
     public ResponseEntity getAllUsers() {
         return wrapForAdmin(() -> this.service.getAllUsers());
     }
 
-    @RequestMapping(value = "/api/v1/admin/getUser/{userId}", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/api/user/{userId}", method = RequestMethod.GET, produces="application/json")
     public ResponseEntity getUser(@PathVariable final String userId) {
         return wrapForAdmin(() -> this.service.getUser(UUID.fromString(userId)));
     }
 
-    @RequestMapping(value = "/api/v1/admin/editUser", method = RequestMethod.PATCH, produces="application/json")
+    @RequestMapping(value = "/api/user", method = RequestMethod.PATCH, produces="application/json")
     public ResponseEntity editUser(@RequestBody User user) {
         return wrapForAdmin(() -> this.service.editUser(user));
     }
@@ -93,4 +93,8 @@ public class UserController extends BaseController {
     public ResponseEntity deleteUser(@PathVariable String userId) {
         return wrapForAdmin(() -> this.service.deleteUser(UUID.fromString(userId)));
     }
+
+
+
+
 }
