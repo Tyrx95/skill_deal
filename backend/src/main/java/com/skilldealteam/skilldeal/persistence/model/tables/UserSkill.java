@@ -18,7 +18,7 @@ public class UserSkill extends BaseModel {
     @Column(name = "lesson_price")
     private Integer lessonPrice;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "skill_category_id", referencedColumnName = "id")
     private SkillCategory skill;
 

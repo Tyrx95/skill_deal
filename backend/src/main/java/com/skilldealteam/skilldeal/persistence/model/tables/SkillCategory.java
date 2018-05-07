@@ -1,8 +1,10 @@
 package com.skilldealteam.skilldeal.persistence.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skilldealteam.skilldeal.persistence.model.BaseModel;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,10 +19,6 @@ public class SkillCategory extends BaseModel{
 
     @Column(name = "name")
     private String name;
-
-    @OneToOne(mappedBy = "skill", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
-    private UserSkill userSkill;
 
     public SkillCategory() {}
 
@@ -40,15 +38,4 @@ public class SkillCategory extends BaseModel{
         this.name = name;
     }
 
-    public void setUserSkill(UserSkill userSkill) {
-        if (userSkill == null) {
-            if (this.userSkill != null) {
-                this.userSkill.setSkill(null);
-            }
-        }
-        else {
-            userSkill.setSkill(this);
-        }
-        this.userSkill = userSkill;
-    }
 }
