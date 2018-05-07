@@ -8,11 +8,11 @@ import com.skilldealteam.skilldeal.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Controller
@@ -21,6 +21,8 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService service;
+
+    private static final String IMAGE_DIRECTORY = "./resources/static/images/";
 
     @RequestMapping(value = "/api/login", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity login(@RequestBody LoginForm loginForm) {
@@ -44,7 +46,7 @@ public class UserController extends BaseController {
         });
     }
 
-    @RequestMapping(value = "/api/v1/register",
+    @RequestMapping(value = "/api/user/register",
             method = RequestMethod.POST,
             produces="application/json")
     public ResponseEntity register(@RequestBody RegisterForm registerForm) {
@@ -94,7 +96,28 @@ public class UserController extends BaseController {
         return wrapForAdmin(() -> this.service.deleteUser(UUID.fromString(userId)));
     }
 
+    @RequestMapping(value = "/api/user/{userId}/picture", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity changePicture(@RequestParam("file") MultipartFile picture,
+                                        @PathVariable String userId){
+        return wrapForUser(() -> {
+            if (picture != null) {
+                String extension = getExtension(picture.getOriginalFilename());
+                Long timestamp = System.currentTimeMillis();
+                String pathString= IMAGE_DIRECTORY + timestamp + "."+ extension;
+                byte[] bytes = picture.getBytes();
+                Files.write(Paths.get(pathString),bytes);
+                String newPath = "/images/" + timestamp + "." +  extension;
+                service.updatePictureUrl(UUID.fromString(userId), newPath);
+                return "{ \"path\": \"" + newPath+"\"}";
+            } else {
+                return "{ \"message\": \"" + "failed" + "\"}";
+            }});
+    }
 
-
+    private String getExtension(String filename){
+        String[] fileNameSplit = filename.split("\\.");
+        String fileExtension = fileNameSplit[fileNameSplit.length-1];
+        return fileExtension;
+    }
 
 }

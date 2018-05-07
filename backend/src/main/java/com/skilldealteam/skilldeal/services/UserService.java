@@ -109,5 +109,13 @@ public class UserService extends BaseService {
         getSession().delete(user);
         return true;
     }
+
+
+    public Boolean updatePictureUrl(UUID userId, String newPath) {
+        User user = getUser(userId);
+        user.setImageUri(newPath);
+        getSession().update(user);
+        return true;
+    }
 }
 

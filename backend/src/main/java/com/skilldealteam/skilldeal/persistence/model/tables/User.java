@@ -57,6 +57,12 @@ public class User extends BaseModel {
     @Column(name = "skill_points")
     private Integer skillPoints = 0;
 
+    @Column(name = "gives_video_lesson")
+    private Boolean givesVideoLesson = true;
+
+    @Column(name = "gives_live_meeting")
+    private Boolean givesLiveMeeting = true;
+
     @OneToMany(mappedBy = "userId")
     private Set<UserSkill> skills;
 
@@ -232,5 +238,21 @@ public class User extends BaseModel {
 
     public void setTutorLessons(List<Lesson> tutorLessons) {
         this.tutorLessons = tutorLessons;
+    }
+
+    public Boolean getGivesVideoLesson() {
+        return givesVideoLesson;
+    }
+
+    public void setGivesVideoLesson(Boolean givesVideoLesson) {
+        this.givesVideoLesson = givesVideoLesson;
+    }
+
+    public Boolean getGivesLiveMeeting() {
+        return givesLiveMeeting;
+    }
+
+    public void setGivesLiveMeeting(Boolean givesLiveMeeting) {
+        this.givesLiveMeeting = givesLiveMeeting;
     }
 }
