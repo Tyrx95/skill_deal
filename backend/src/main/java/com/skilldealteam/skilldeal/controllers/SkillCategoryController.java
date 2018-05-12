@@ -18,15 +18,16 @@ public class SkillCategoryController extends BaseController {
     @Autowired
     private SkillCategoryService service;
 
+
     @RequestMapping(value = "/api/skillCategories", method = RequestMethod.GET, produces="application/json")
     public ResponseEntity getSkillCategories() {
         return wrapForPublic(() ->
-           this.service.getSkillCategories());
+                this.service.getSkillCategories());
     }
 
     //temporary for testing purposes
     @RequestMapping(value = "/api/createSkillCategory", method = RequestMethod.POST, produces="application/json")
-    public ResponseEntity createCity(@RequestBody SkillCategory skillCategory) {
+    public ResponseEntity createSkillCategory(@RequestBody SkillCategory skillCategory) {
         return wrapForPublic(() -> this.service.createSkillCategory(skillCategory));
     }
 
