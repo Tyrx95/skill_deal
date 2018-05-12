@@ -16,18 +16,18 @@ public class LessonRequest extends BaseModel {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private User student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "tutor_id", referencedColumnName = "id")
     private User tutor;
 
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "skill_id", referencedColumnName = "id")
     private UserSkill skill;
 

@@ -17,22 +17,25 @@ public class UserSkill extends BaseModel {
     @Column(name = "lesson_price")
     private Integer lessonPrice;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "skill_category_id", referencedColumnName = "id")
     private SkillCategory skill;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "video_lesson")
-    private boolean videoLesson;
-
-    @Column(name = "live_meeting")
-    private boolean liveMeeting;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User userId;
+    private User user;
+
+    @Column(name = "gives_video_lesson")
+    private Boolean givesVideoLesson;
+
+    @Column(name = "gives_live_meeting")
+    private Boolean givesLiveMeeting;
+
+    public UserSkill() {
+    }
 
     public UUID getId() {
         return id;
@@ -66,27 +69,27 @@ public class UserSkill extends BaseModel {
         this.description = description;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public boolean isVideoLesson() {
-        return videoLesson;
+    public Boolean getGivesVideoLesson() {
+        return givesVideoLesson;
     }
 
-    public void setVideoLesson(boolean videoLesson) {
-        this.videoLesson = videoLesson;
+    public void setGivesVideoLesson(Boolean givesVideoLesson) {
+        this.givesVideoLesson = givesVideoLesson;
     }
 
-    public boolean isLiveMeeting() {
-        return liveMeeting;
+    public Boolean getGivesLiveMeeting() {
+        return givesLiveMeeting;
     }
 
-    public void setLiveMeeting(boolean liveMeeting) {
-        this.liveMeeting = liveMeeting;
+    public void setGivesLiveMeeting(Boolean givesLiveMeeting) {
+        this.givesLiveMeeting = givesLiveMeeting;
     }
 }

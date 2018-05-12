@@ -17,7 +17,6 @@ public class SkillCategoryService extends BaseService {
     }
 
     public Boolean createSkillCategory(final SkillCategory skillCategory) throws Exception {
-        skillCategory.setName(skillCategory.getName().toLowerCase());
         getSession().save(skillCategory);
         return true;
     }
