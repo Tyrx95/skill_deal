@@ -1,6 +1,9 @@
 package com.skilldealteam.skilldeal.persistence.model.tables;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.skilldealteam.skilldeal.persistence.model.BaseModel;
 
 import javax.persistence.*;
@@ -16,18 +19,18 @@ public class LessonRequest extends BaseModel {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private User student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tutor_id", referencedColumnName = "id")
     private User tutor;
 
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "skill_id", referencedColumnName = "id")
     private UserSkill skill;
 
