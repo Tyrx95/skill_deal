@@ -7,6 +7,7 @@ import com.skilldealteam.skilldeal.persistence.model.tables.User;
 import com.skilldealteam.skilldeal.persistence.model.tables.UserSkill;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 
@@ -40,16 +41,18 @@ public class SearchService extends BaseService {
         if(searchFilter.videoLesson == true){
             userSkillCriteria.add(Restrictions.eq("givesVideoLesson", searchFilter.videoLesson));
         }
+        userSkillCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<UserSkill> userSkills = userSkillCriteria.list();
 
         if(searchFilter.sortBy.equalsIgnoreCase("rating")){
-            userSkillCriteria.addOrder(Order.desc("(u.rating)/(u.number)"));
+            userSkills.sort((s1, s2) -> s1.getUser().getRating().compareTo(s2.getUser().getRating()));
         }
 
         else if(searchFilter.sortBy.equalsIgnoreCase("relevance")){
             //TODO implement relevance algorithm;
         }
-        userSkillCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        return userSkillCriteria.list();
+
+        return userSkills;
     }
 
 }
