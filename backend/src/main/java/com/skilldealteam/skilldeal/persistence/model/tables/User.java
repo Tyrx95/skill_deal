@@ -4,6 +4,7 @@ package com.skilldealteam.skilldeal.persistence.model.tables;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skilldealteam.skilldeal.persistence.model.BaseModel;
 import com.skilldealteam.skilldeal.services.Passwords;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.*;
@@ -78,8 +79,8 @@ public class User extends BaseModel {
     @OneToMany(mappedBy = "tutor")
     private List<LessonRequest> tutorLessonRequests;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "ratedUser")
+
+    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER)
     private List<Rating> ratedUserRating;
 
     @JsonIgnore
@@ -209,7 +210,8 @@ public class User extends BaseModel {
     }
 
     public Double getRating() {
-        return rating;
+        OptionalDouble average = this.ratedUserRating.stream().mapToInt(Rating::getRating).average();
+        return average.isPresent() ? average.getAsDouble() : 0D;
     }
 
     public void setRating(Double rating) {

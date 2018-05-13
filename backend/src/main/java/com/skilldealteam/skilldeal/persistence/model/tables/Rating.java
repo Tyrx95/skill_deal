@@ -1,5 +1,6 @@
 package com.skilldealteam.skilldeal.persistence.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.engine.profile.Fetch;
 
 import javax.persistence.*;
@@ -17,11 +18,13 @@ public class Rating {
     @Column(name = "rating")
     private Integer rating;
 
-    @ManyToOne()
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rated_user_id", referencedColumnName = "id")
     private User ratedUser;
 
-    @ManyToOne()
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rating_user_id", referencedColumnName = "id")
     private User ratingUser;
 
