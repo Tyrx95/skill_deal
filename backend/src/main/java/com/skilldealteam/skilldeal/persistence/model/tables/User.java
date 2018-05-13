@@ -1,8 +1,10 @@
 package com.skilldealteam.skilldeal.persistence.model.tables;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skilldealteam.skilldeal.persistence.model.BaseModel;
 import com.skilldealteam.skilldeal.services.Passwords;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.*;
@@ -28,11 +30,11 @@ public class User extends BaseModel {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "home_location_id", referencedColumnName = "id")
     private Location homeLocation;
 
@@ -57,32 +59,39 @@ public class User extends BaseModel {
     @Column(name = "skill_points")
     private Integer skillPoints = 0;
 
-    @Column(name = "gives_video_lesson")
-    private Boolean givesVideoLesson = true;
-
-    @Column(name = "gives_live_meeting")
-    private Boolean givesLiveMeeting = true;
-
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<UserSkill> skills;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "student")
     private List<Lesson> studentLessons;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tutor")
     private List<Lesson> tutorLessons;
 
-    @Column(name = "number_of_ratings")
-    private Integer number_of_ratings;
-
-    @Column(name = "rating")
-    private Double rating;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "student")
     private List<LessonRequest> studentLessonRequests;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tutor")
     private List<LessonRequest> tutorLessonRequests;
+
+
+    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER)
+    private List<Rating> ratedUserRating;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "ratingUser")
+    private List<Rating> ratingUserRatings;
+
+    @Transient
+    private Double rating;
+
+    @Transient
+    private Integer numberOfRatings;
 
     public User() { }
 
@@ -192,16 +201,17 @@ public class User extends BaseModel {
         this.homeLocation = homeLocation;
     }
 
-    public Integer getNumber_of_ratings() {
-        return number_of_ratings;
+    public Integer getNumberOfRatings() {
+        return numberOfRatings;
     }
 
-    public void setNumber_of_ratings(Integer number_of_ratings) {
-        this.number_of_ratings = number_of_ratings;
+    public void setNumberOfRatings(Integer numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
 
     public Double getRating() {
-        return rating;
+        OptionalDouble average = this.ratedUserRating.stream().mapToInt(Rating::getRating).average();
+        return average.isPresent() ? average.getAsDouble() : 0D;
     }
 
     public void setRating(Double rating) {
@@ -240,19 +250,19 @@ public class User extends BaseModel {
         this.tutorLessons = tutorLessons;
     }
 
-    public Boolean getGivesVideoLesson() {
-        return givesVideoLesson;
+    public List<Rating> getRatedUserRating() {
+        return ratedUserRating;
     }
 
-    public void setGivesVideoLesson(Boolean givesVideoLesson) {
-        this.givesVideoLesson = givesVideoLesson;
+    public void setRatedUserRating(List<Rating> ratedUserRating) {
+        this.ratedUserRating = ratedUserRating;
     }
 
-    public Boolean getGivesLiveMeeting() {
-        return givesLiveMeeting;
+    public List<Rating> getRatingUserRatings() {
+        return ratingUserRatings;
     }
 
-    public void setGivesLiveMeeting(Boolean givesLiveMeeting) {
-        this.givesLiveMeeting = givesLiveMeeting;
+    public void setRatingUserRatings(List<Rating> ratingUserRatings) {
+        this.ratingUserRatings = ratingUserRatings;
     }
 }

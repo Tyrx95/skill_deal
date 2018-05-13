@@ -15,7 +15,7 @@ public class Notification extends BaseModel {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "notification_id", referencedColumnName = "id")
     private User receiver;
 
