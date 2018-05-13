@@ -2,6 +2,7 @@ package com.skilldealteam.skilldeal.controllers;
 
 import com.google.common.cache.LoadingCache;
 import com.skilldealteam.skilldeal.exceptions.ServiceException;
+import com.skilldealteam.skilldeal.helpers.ErrorMessage;
 import com.skilldealteam.skilldeal.persistence.model.tables.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,8 @@ abstract class BaseController{
         } catch (Exception e) {
             e.printStackTrace();
             String message = e.getMessage() != null ? e.getMessage() : "Unknown Error";
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorMessage().setDescription(e.getMessage()));
         }
     }
 
