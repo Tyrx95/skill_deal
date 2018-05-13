@@ -51,15 +51,23 @@ public class LessonRequestService extends BaseService {
 
     }
 
-    public boolean confirmLessonRequest(UUID lessonRequestId) {
-        //createLesson
-        boolean success = createLesson(lessonRequestId);
-        //deleteLessonRequest
-        if (success) {
-            this.deleteLessonRequest(lessonRequestId);
-            //createNotification
-            //makePayment
-            return true;
+    public boolean confirmLessonRequest(UUID lessonRequestId) throws Exception {
+
+        LessonRequest lessonRequest = (LessonRequest) getSession().createCriteria(LessonRequest.class)
+                .add(Restrictions.eq("id", lessonRequestId))
+                .uniqueResult();
+        //check if amount is enough
+        if (lessonRequest.getStudent().getSkillPoints() > lessonRequest.getSkill().getLessonPrice()) {
+            //createLesson
+            boolean success = createLesson(lessonRequestId);
+            if (success) {
+                //deleteLessonRequest
+                this.deleteLessonRequest(lessonRequestId);
+                //makePayment
+                makePayment(lessonRequest.getTutor(), lessonRequest.getStudent(), lessonRequest.getSkill().getLessonPrice());
+                //createNotification
+                return true;
+            }
         }
         return false;
     }
@@ -86,4 +94,13 @@ public class LessonRequestService extends BaseService {
         getSession().save(lesson);
         return true;
     }
+
+    public boolean makePayment(User tutor, User student, int price) throws Exception {
+        tutor.setSkillPoints(tutor.getSkillPoints()+price);
+        getSession().update(tutor);
+        student.setSkillPoints(student.getSkillPoints()-price);
+        getSession().update(student);
+        return true;
+    }
+
 }
