@@ -46,7 +46,7 @@ public class LessonRequestController extends BaseController {
     @RequestMapping(value = "/api/lessonRequests/{lessonRequestId}", method = RequestMethod.DELETE, produces = "application/json")
     public ResponseEntity deleteLessonRequest(@PathVariable final String lessonRequestId) {
         return wrapForPublic(() ->
-                this.service.deleteLessonRequest(UUID.fromString(lessonRequestId)));
+                this.service.deleteLessonRequest(UUID.fromString(lessonRequestId),true));
     }
 
 

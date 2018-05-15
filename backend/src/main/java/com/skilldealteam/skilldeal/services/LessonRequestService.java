@@ -1,14 +1,13 @@
 package com.skilldealteam.skilldeal.services;
 
+import com.skilldealteam.skilldeal.helpers.NotificationMessage;
 import com.skilldealteam.skilldeal.helpers.forms.LessonRequestForm;
-import com.skilldealteam.skilldeal.persistence.model.tables.Lesson;
-import com.skilldealteam.skilldeal.persistence.model.tables.LessonRequest;
-import com.skilldealteam.skilldeal.persistence.model.tables.User;
-import com.skilldealteam.skilldeal.persistence.model.tables.UserSkill;
+import com.skilldealteam.skilldeal.persistence.model.tables.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +27,9 @@ public class LessonRequestService extends BaseService {
                     .uniqueResult();
             LessonRequest lessonRequest = lessonRequestForm.createLessonRequest(tutor, student, userSkill);
             getSession().save(lessonRequest);
+            createNotification(lessonRequest.getTutor(),
+                    NotificationMessage.sentLessonRequestMessage(lessonRequest.getStudent().getFirstName(), lessonRequest.getStudent().getLastName()),
+                    NotificationMessage.SENT_LESSON_REQUEST_ICON);
             return true;
         } catch (Exception e) {
             throw e;
@@ -62,27 +64,35 @@ public class LessonRequestService extends BaseService {
             boolean success = createLesson(lessonRequestId);
             if (success) {
                 //deleteLessonRequest
-                this.deleteLessonRequest(lessonRequestId);
+                this.deleteLessonRequest(lessonRequestId, false);
                 //makePayment
                 makePayment(lessonRequest.getTutor(), lessonRequest.getStudent(), lessonRequest.getSkill().getLessonPrice());
                 //createNotification
+                createNotification(lessonRequest.getStudent(),
+                        NotificationMessage.confirmedLessonRequestMessage(lessonRequest.getTutor().getFirstName(), lessonRequest.getTutor().getLastName()),
+                        NotificationMessage.CONFIRMED_LESSON_REQUEST_ICON);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean deleteLessonRequest(UUID lessonRequestId) {
+    public boolean deleteLessonRequest(UUID lessonRequestId, boolean createNotification) {
         LessonRequest lessonRequest = (LessonRequest) getSession()
                 .createCriteria(LessonRequest.class)
                 .add(Restrictions.eq("id", lessonRequestId))
                 .uniqueResult();
         getSession().delete(lessonRequest);
+        if (createNotification) {
+            createNotification(lessonRequest.getStudent(),
+                    NotificationMessage.canceledLessonRequestMessage(lessonRequest.getTutor().getFirstName(), lessonRequest.getTutor().getLastName()),
+                    NotificationMessage.CANCELED_LESSON_REQUEST_ICON);
+        }
         return true;
     }
 
 
-    public boolean createLesson(UUID lessonRequestId) {
+    private boolean createLesson(UUID lessonRequestId) {
         LessonRequest lessonRequest = (LessonRequest) getSession().createCriteria(LessonRequest.class)
                 .add(Restrictions.eq("id", lessonRequestId))
                 .uniqueResult();
@@ -95,10 +105,10 @@ public class LessonRequestService extends BaseService {
         return true;
     }
 
-    public boolean makePayment(User tutor, User student, int price) throws Exception {
-        tutor.setSkillPoints(tutor.getSkillPoints()+price);
+    private boolean makePayment(User tutor, User student, int price) throws Exception {
+        tutor.setSkillPoints(tutor.getSkillPoints() + price);
         getSession().update(tutor);
-        student.setSkillPoints(student.getSkillPoints()-price);
+        student.setSkillPoints(student.getSkillPoints() - price);
         getSession().update(student);
         return true;
     }
