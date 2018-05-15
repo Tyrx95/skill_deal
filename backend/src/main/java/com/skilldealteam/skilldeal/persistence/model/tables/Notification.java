@@ -1,5 +1,6 @@
 package com.skilldealteam.skilldeal.persistence.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skilldealteam.skilldeal.persistence.model.BaseModel;
 
 import javax.persistence.*;
@@ -15,7 +16,8 @@ public class Notification extends BaseModel {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne()
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_id", referencedColumnName = "id")
     private User receiver;
 
