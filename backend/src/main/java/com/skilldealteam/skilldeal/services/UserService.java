@@ -1,6 +1,7 @@
 package com.skilldealteam.skilldeal.services;
 
 import com.skilldealteam.skilldeal.exceptions.ServiceException;
+import com.skilldealteam.skilldeal.helpers.NotificationMessage;
 import com.skilldealteam.skilldeal.helpers.forms.LoginForm;
 import com.skilldealteam.skilldeal.helpers.forms.RegisterForm;
 import com.skilldealteam.skilldeal.persistence.model.tables.Location;
@@ -45,6 +46,7 @@ public class UserService extends BaseService {
                     .uniqueResult();
             User newUser = registerForm.createAccount(location, homeLocation);
             getSession().save(newUser);
+            createNotification(newUser, NotificationMessage.registeredAccountMessage(), NotificationMessage.REGISTERED_ACCOUNT_ICON);
             return newUser;
         } catch (Exception e) {
             throw e;
@@ -94,8 +96,8 @@ public class UserService extends BaseService {
         if (user.getId() != null) {
             User dbUser = this.getUser(user.getId());
             dbUser.setIsAdmin(user.getIsAdmin());
-
             getSession().update(dbUser);
+            createNotification(dbUser, NotificationMessage.modifiedProfileMessage(), NotificationMessage.MODIFIED_PROFILE_ICON);
             return true;
         }
         return false;
