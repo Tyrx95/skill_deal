@@ -37,10 +37,10 @@ public class PersistenceConfig {
     @Bean
     public DataSource dataSource() {
         final BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(Preconditions.checkNotNull(env.getProperty("jdbc.driverClassName")));
-        dataSource.setUrl(Preconditions.checkNotNull(env.getProperty("jdbc.url")));
-        dataSource.setUsername(Preconditions.checkNotNull(env.getProperty("jdbc.user")));
-        dataSource.setPassword(Preconditions.checkNotNull(env.getProperty("jdbc.pass")));
+        dataSource.setDriverClassName(Preconditions.checkNotNull(env.getProperty("spring.datasource.driverClassName")));
+        dataSource.setUrl(Preconditions.checkNotNull(env.getProperty("spring.datasource.url")));
+        dataSource.setUsername(Preconditions.checkNotNull(env.getProperty("spring.datasource.username")));
+        dataSource.setPassword(Preconditions.checkNotNull(env.getProperty("spring.datasource.password")));
 
         return dataSource;
     }
