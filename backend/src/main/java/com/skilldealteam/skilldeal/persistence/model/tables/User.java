@@ -2,6 +2,7 @@ package com.skilldealteam.skilldeal.persistence.model.tables;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.skilldealteam.skilldeal.persistence.model.BaseModel;
 import com.skilldealteam.skilldeal.services.Passwords;
 import org.hibernate.annotations.Formula;
@@ -210,6 +211,9 @@ public class User extends BaseModel {
     }
 
     public Double getRating() {
+        if(ratedUserRating == null){
+            return null;
+        }
         OptionalDouble average = this.ratedUserRating.stream().mapToInt(Rating::getRating).average();
         return average.isPresent() ? average.getAsDouble() : 0D;
     }
