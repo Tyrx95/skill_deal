@@ -25,6 +25,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                                 "https://31.13.112.129",
                                 "https://31.13.112.129:*"
 
-                );
+                )
+                .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
     }
 }
