@@ -12,7 +12,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        /*registry.addMapping("/**")
                 .allowedOrigins("http://localhost",
                                 "http://127.0.0.1",
                                 "http://skilldeal.bss.design/",
@@ -26,6 +26,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                                 "https://31.13.112.129:*"
 
                 )
-                .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
+                .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");*/
+        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedOrigins("*")
+                .allowedHeaders("*");
     }
 }
