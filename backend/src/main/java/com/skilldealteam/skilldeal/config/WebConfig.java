@@ -15,7 +15,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost",
                                 "http://127.0.0.1",
-                                "http://skilldeal.bss.design/profile.html"
+                                "http://skilldeal.bss.design/"
                 );
     }
 }
