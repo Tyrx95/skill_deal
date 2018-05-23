@@ -94,10 +94,8 @@ public class UserService extends BaseService {
 
     public Boolean editUser(User user) {
         if (user.getId() != null) {
-            User dbUser = this.getUser(user.getId());
-            dbUser.setIsAdmin(user.getIsAdmin());
-            getSession().update(dbUser);
-            createNotification(dbUser, NotificationMessage.modifiedProfileMessage(), NotificationMessage.MODIFIED_PROFILE_ICON);
+            getSession().update(user);
+            createNotification(user, NotificationMessage.modifiedProfileMessage(), NotificationMessage.MODIFIED_PROFILE_ICON);
             return true;
         }
         return false;
