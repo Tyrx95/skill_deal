@@ -9,7 +9,7 @@ public class NotificationMessage {
     private static final String MODIFIED_PROFILE = "You have successfully modified your profile info!";
     private static final String REGISTERED_ACCOUNT = " You have successfully registered your account!";
 
-    public static final String SENT_LESSON_REQUEST_ICON = "fa-comment-alt";
+    public static final String SENT_LESSON_REQUEST_ICON = "fa-bell";
     public static final String CONFIRMED_LESSON_REQUEST_ICON = "fa-check-circle";
     public static final String CANCELED_LESSON_REQUEST_ICON = "fa-times-circle";
     public static final String CANCELED_LESSON_ICON = "fa-ban";
