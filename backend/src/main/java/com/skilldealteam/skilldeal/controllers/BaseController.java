@@ -59,7 +59,7 @@ abstract class BaseController{
             if(uid != null){
                 user = this.userCache.get(uid);
             }
-            if (user != null && user.getIsAdmin()) {
+            if (user != null && user.getIsAdmin() != null && user.getIsAdmin() ) {
                 return wrapForPublic(block);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

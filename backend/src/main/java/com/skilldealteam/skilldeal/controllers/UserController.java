@@ -78,22 +78,22 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET, produces="application/json")
     public ResponseEntity getAllUsers() {
-        return wrapForAdmin(() -> this.service.getAllUsers());
+        return wrapForPublic(() -> this.service.getAllUsers());
     }
 
     @RequestMapping(value = "/api/user/{userId}", method = RequestMethod.GET, produces="application/json")
     public ResponseEntity getUser(@PathVariable final String userId) {
-        return wrapForAdmin(() -> this.service.getUser(UUID.fromString(userId)));
+        return wrapForPublic(() -> this.service.getUser(UUID.fromString(userId)));
     }
 
     @RequestMapping(value = "/api/user", method = RequestMethod.PATCH, produces="application/json")
     public ResponseEntity editUser(@RequestBody User user) {
-        return wrapForAdmin(() -> this.service.editUser(user));
+        return wrapForPublic(() -> this.service.editUser(user));
     }
 
     @RequestMapping(value = "/api/v1/admin/deleteUser/{userId}", method = RequestMethod.DELETE, produces="application/json")
     public ResponseEntity deleteUser(@PathVariable String userId) {
-        return wrapForAdmin(() -> this.service.deleteUser(UUID.fromString(userId)));
+        return wrapForPublic(() -> this.service.deleteUser(UUID.fromString(userId)));
     }
 
     @RequestMapping(value = "/api/user/{userId}/picture", method = RequestMethod.POST, produces="application/json")
