@@ -13,7 +13,7 @@ public class NotificationMessage {
     public static final String CONFIRMED_LESSON_REQUEST_ICON = "fa-check-circle";
     public static final String CANCELED_LESSON_REQUEST_ICON = "fa-times-circle";
     public static final String CANCELED_LESSON_ICON = "fa-ban";
-    public static final String MODIFIED_PROFILE_ICON = "fa-user-edit";
+    public static final String MODIFIED_PROFILE_ICON = "fa-pencil-square-o";
     public static final String REGISTERED_ACCOUNT_ICON = "fa-user-plus";
 
 
