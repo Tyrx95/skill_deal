@@ -28,6 +28,14 @@ public class Rating {
     @JoinColumn(name = "rating_user_id", referencedColumnName = "id")
     private User ratingUser;
 
+    public Rating() {
+    }
+
+    public Rating(Integer rating, User ratedUser, User ratingUser) {
+        this.rating = rating;
+        this.ratedUser = ratedUser;
+        this.ratingUser = ratingUser;
+    }
 
     public UUID getId() {
         return id;
