@@ -28,10 +28,8 @@ public class LessonRequestController extends BaseController {
                 this.service.getLessonRequestsStudent(UUID.fromString(userId)));
     }
 
-    @RequestMapping(value = "/api/lessonRequests/tutor/{userId}", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity createLessonRequest(@RequestBody LessonRequestForm lessonRequestForm, @RequestHeader HttpHeaders headers, @PathVariable String userId) {
-        lessonRequestForm.setTutorId(UUID.fromString(userId));
-        lessonRequestForm.setStudentId(UUID.fromString(headers.get("user").get(0)));
+    @RequestMapping(value = "/api/lessonRequests", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity createLessonRequest(@RequestBody LessonRequestForm lessonRequestForm) {
         return wrapForPublic(() ->
                 this.service.createLessonRequest(lessonRequestForm));
     }
