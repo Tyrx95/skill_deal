@@ -22,7 +22,7 @@ public class Notification extends BaseModel {
     private User receiver;
 
     @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+    private String timestamp;
 
     @Column(name = "content")
     private String content;
@@ -51,11 +51,11 @@ public class Notification extends BaseModel {
         this.receiver = receiver;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 

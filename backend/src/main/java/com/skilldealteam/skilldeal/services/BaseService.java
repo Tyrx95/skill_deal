@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
 @Transactional
@@ -32,11 +33,17 @@ abstract class BaseService {
 
 
     void createNotification(User reciever, String content, String icon) {
+        LocalDateTime now = LocalDateTime.now();
+        String month = String.valueOf(now.getMonth());
+        month = month.substring(0,1).toUpperCase() + month.substring(1).toLowerCase();
+        String timestamp = String.valueOf(now.getDayOfMonth()) +" "
+                + month +" "+ + now.getYear() + " at " + now.getHour() + ":" + now.getMinute();
+
         Notification notification = new Notification();
         notification.setReceiver(reciever);
         notification.setContent(content);
         notification.setFAIcon(icon);
-        notification.setTimestamp(LocalDateTime.now());
+        notification.setTimestamp(timestamp);
         notification.setOpened(false);
         getSession().save(notification);
     }
