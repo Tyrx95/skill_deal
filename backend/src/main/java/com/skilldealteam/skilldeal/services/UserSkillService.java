@@ -42,6 +42,7 @@ public class UserSkillService extends BaseService {
 
         Criteria criteria = getSession().createCriteria(UserSkill.class);
         criteria.add(Restrictions.eq("user.id", userId));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return (List<UserSkill>) criteria.list();
 
     }
