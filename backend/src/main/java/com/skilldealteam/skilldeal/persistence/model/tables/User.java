@@ -60,33 +60,38 @@ public class User extends BaseModel {
     @Column(name = "skill_points")
     private Integer skillPoints = 0;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<UserSkill> skills;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lesson> studentLessons;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "tutor")
+    @OneToMany(mappedBy = "tutor",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lesson> tutorLessons;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LessonRequest> studentLessonRequests;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "tutor")
+    @OneToMany(mappedBy = "tutor",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LessonRequest> tutorLessonRequests;
 
 
-    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratedUserRating;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "ratingUser")
+    @OneToMany(mappedBy = "ratingUser",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratingUserRatings;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "receiver",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notifications;
+
 
     @Transient
     private Double rating;
@@ -268,5 +273,13 @@ public class User extends BaseModel {
 
     public void setRatingUserRatings(List<Rating> ratingUserRatings) {
         this.ratingUserRatings = ratingUserRatings;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 }
