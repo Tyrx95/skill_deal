@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 @Service
 public class NotificationService extends BaseService {
@@ -33,7 +35,9 @@ public class NotificationService extends BaseService {
         criteriaQuery.select(root);
         criteriaQuery.where(builder.equal(root.get("receiver").get("id"),userId));
         Query<Notification> query = getSession().createQuery(criteriaQuery);
-        return query.getResultList();
+        List<Notification> notifications = query.getResultList();
+        Collections.reverse(notifications);
+        return notifications;
     }
 
 }

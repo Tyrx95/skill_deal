@@ -4,6 +4,7 @@ import com.skilldealteam.skilldeal.helpers.NotificationMessage;
 import com.skilldealteam.skilldeal.helpers.forms.LessonRequestForm;
 import com.skilldealteam.skilldeal.persistence.model.tables.*;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,7 @@ public class LessonRequestService extends BaseService {
                 .createCriteria(LessonRequest.class);
         criteria.add(Restrictions.eq("tutor.id", tutorId));
         List<LessonRequest> list = criteria.list();
+        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 
@@ -49,6 +51,7 @@ public class LessonRequestService extends BaseService {
         Criteria criteria = getSession()
                 .createCriteria(LessonRequest.class);
         criteria.add(Restrictions.eq("student.id", studentId));
+        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return criteria.list();
 
     }
@@ -59,21 +62,21 @@ public class LessonRequestService extends BaseService {
                 .add(Restrictions.eq("id", lessonRequestId))
                 .uniqueResult();
         //check if amount is enough
-        if (lessonRequest.getStudent().getSkillPoints() > lessonRequest.getSkill().getLessonPrice()) {
+        //if (lessonRequest.getStudent().getSkillPoints() > lessonRequest.getSkill().getLessonPrice()) {
             //createLesson
             boolean success = createLesson(lessonRequestId);
             if (success) {
                 //deleteLessonRequest
                 this.deleteLessonRequest(lessonRequestId, false);
                 //makePayment
-                makePayment(lessonRequest.getTutor(), lessonRequest.getStudent(), lessonRequest.getSkill().getLessonPrice());
+                //makePayment(lessonRequest.getTutor(), lessonRequest.getStudent(), lessonRequest.getSkill().getLessonPrice());
                 //createNotification
                 createNotification(lessonRequest.getStudent(),
                         NotificationMessage.confirmedLessonRequestMessage(lessonRequest.getTutor().getFirstName(), lessonRequest.getTutor().getLastName()),
                         NotificationMessage.CONFIRMED_LESSON_REQUEST_ICON);
                 return true;
             }
-        }
+        //}
         return false;
     }
 
