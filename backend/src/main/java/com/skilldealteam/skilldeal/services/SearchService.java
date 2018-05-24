@@ -11,7 +11,14 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 @Service
 public class SearchService extends BaseService {
@@ -51,7 +58,8 @@ public class SearchService extends BaseService {
         else if(searchFilter.sortBy.equalsIgnoreCase("relevance")){
             //TODO implement relevance algorithm;
         }
-
+        HashSet<User> seen=new HashSet<>();
+        userSkills.removeIf(e->!seen.add(e.getUser()));
         return userSkills;
     }
 
